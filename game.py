@@ -24,9 +24,9 @@ def play_match(team1, team2):
     team2_penalty = [team2_close_shot[1], team2_close_shot[1] - close_penalty_size]
 
     match_score = [0, 0]
-    for i in range(80):
-        #time.sleep(1)
-        if i == 75:
+    for i in range(60):
+        time.sleep(1)
+        if i == 55:
             print("5 minutes left of the match!")
         shot = random.random()
         if shot < team1_score_window:
