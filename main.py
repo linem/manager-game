@@ -1,4 +1,3 @@
-
 import game
 import game_schedule
 import team
@@ -41,6 +40,7 @@ def play_next_round(teams, match_schedule):
         team.update_score(*result)
         team.update_matches_played(*result[0:2])
 
+
 while True:
     next_step = input("Choose [PLAY], [SCORE]: ").lower()
 
@@ -49,32 +49,21 @@ while True:
 
     elif next_step in ["play", "p"]:
         play_next_round(teams, match_schedule)
-    
+
     elif next_step == "end":
         exit()
 
     else:
         print(
-            ("\n"
-            "--- HELP ---\n"
-            "Type PLAY and press enter to play the next match round \n"
-            "Type SCORE and press enter to see the scoreboard \n"
-            "Type END and press enter to end game \n")
+            (
+                "\n"
+                "--- HELP ---\n"
+                "Type PLAY and press enter to play the next match round \n"
+                "Type SCORE and press enter to see the scoreboard \n"
+                "Type END and press enter to end game \n"
+            )
         )
-        
 
 
-
-
-#print(vars(teams[0]))
-#print(vars(teams[1]))
-
-
-
-
-
-
-
-
-
-
+# print(vars(teams[0]))
+# print(vars(teams[1]))
