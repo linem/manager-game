@@ -1,5 +1,5 @@
 import game
-import game_schedule
+import schedule
 import team
 import scoreboard
 
@@ -24,7 +24,7 @@ with open("teams.csv") as file:
 
 
 ## Schedule for each round of matches to be played
-match_schedule = game_schedule.get_schedule(len(teams))
+match_schedule = schedule.get_schedule(len(teams))
 
 
 ## Play match round
