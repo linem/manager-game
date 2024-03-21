@@ -5,29 +5,50 @@ import scoreboard
 
 N_TEAMS = 18
 
-my_team_city = input("Choose a team city: ").title()
-my_team_name = input("Choose a team name: ").upper()
-if len(my_team_city) == 0:
-    my_team = team.Team("Manchester ROCKS", 0.66)
-else:
-    my_team = team.Team(my_team_city + " " + my_team_name, 0.66)
 
-## Define teams
-teams = [my_team]
-with open("teams.csv") as file:
-    for line in file:
-        name, strength = line.strip().split(",")
-        if name.split(" ")[0] != my_team_city:
-            teams.append(team.Team(name, float(strength)))
-        if len(teams) == N_TEAMS:
-            break
+def main():
+    my_team = prepare_my_team()
+    teams = get_list_of_all_teams(my_team, "teams.csv")
+    match_schedule = schedule.get_schedule(len(teams))
+
+    while True:
+        next_step = input("Choose [PLAY], [SCORE]: ").lower()
+
+        if next_step in ["score", "s"]:
+            scoreboard.print_scoreboard(teams)
+
+        elif next_step in ["play", "p"]:
+            play_next_round(teams, match_schedule)
+
+        elif next_step == "end":
+            exit()
+
+        else:
+            print_help_message()
 
 
-## Schedule for each round of matches to be played
-match_schedule = schedule.get_schedule(len(teams))
+def prepare_my_team():
+    my_team_city = input("Choose a team city: ").title().replace(" ", "")
+    my_team_name = input("Choose a team name: ").upper().replace(" ", "")
+    if len(my_team_city) == 0:
+        my_team = team.Team("Manchester ROCKS", 0.66)
+    else:
+        my_team = team.Team(f"{my_team_city} {my_team_name}", 0.66)
+    return my_team
 
 
-## Play match round
+def get_list_of_all_teams(my_team, teams_file):
+    teams = [my_team]
+    with open(teams_file) as file:
+        for line in file:
+            name, strength = line.strip().split(",")
+            if name.split(" ")[0] != my_team.name.split(" ")[0]:
+                teams.append(team.Team(name, float(strength)))
+            if len(teams) == N_TEAMS:
+                break
+    return teams
+
+
 def play_next_round(teams, match_schedule):
     this_round_number = teams[0].matches_played + 1
     for match in match_schedule[this_round_number]:
@@ -41,29 +62,17 @@ def play_next_round(teams, match_schedule):
         team.update_matches_played(*result[0:2])
 
 
-while True:
-    next_step = input("Choose [PLAY], [SCORE]: ").lower()
-
-    if next_step in ["score", "s"]:
-        scoreboard.print_scoreboard(teams)
-
-    elif next_step in ["play", "p"]:
-        play_next_round(teams, match_schedule)
-
-    elif next_step == "end":
-        exit()
-
-    else:
-        print(
-            (
-                "\n"
-                "--- HELP ---\n"
-                "Type PLAY and press enter to play the next match round \n"
-                "Type SCORE and press enter to see the scoreboard \n"
-                "Type END and press enter to end game \n"
-            )
+def print_help_message():
+    print(
+        (
+            "\n"
+            "--- HELP ---\n"
+            "Type PLAY and press enter to play the next match round \n"
+            "Type SCORE and press enter to see the scoreboard \n"
+            "Type END and press enter to end game \n"
         )
+    )
 
 
-# print(vars(teams[0]))
-# print(vars(teams[1]))
+if __name__ == "__main__":
+    main()
