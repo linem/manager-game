@@ -2,6 +2,7 @@ import game
 import schedule
 import team
 import scoreboard
+import train
 
 N_TEAMS = 18
 
@@ -12,13 +13,17 @@ def main():
     match_schedule = schedule.get_schedule(len(teams))
 
     while True:
-        next_step = input("Choose [PLAY], [SCORE]: ").lower()
+        next_step = input("Choose [PLAY], [SCORE], [TRAIN]: ").lower()
 
         if next_step in ["score", "s"]:
             scoreboard.print_scoreboard(teams)
 
         elif next_step in ["play", "p"]:
             play_next_round(teams, match_schedule)
+
+        elif next_step in ["train", "t"]:
+            bonus_strength = train.train_team()
+            team.update_strength(teams[0], bonus_strength)
 
         elif next_step == "end":
             exit()

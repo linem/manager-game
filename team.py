@@ -31,3 +31,8 @@ def update_matches_played(team1, team2):
     """Updates the number of matches played"""
     team1.matches_played += 1
     team2.matches_played += 1
+
+
+def update_strength(team, bonus_strength):
+    """Updates the strength of a team after training or trading"""
+    team.strength += bonus_strength
