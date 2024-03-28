@@ -1,38 +1,27 @@
-def plan_rules(x):
-    """Logic for next round in match planning for 18 teams"""
-    if x in range(1, 8):
-        x += 1
-    elif x == 8:
-        x += 9
-    elif x == 9:
-        x -= 8
-    elif x in range(10, 18):
+def plan_rules(x, n):
+    if x == 1:
+        x = n - 1
+    elif 2 <= x < n:
         x -= 1
     return x
 
 
-def get_schedule(number_of_teams):
+def get_schedule(n_teams):
     """Returns the team numbers in matches for each round"""
-    if number_of_teams != 18:
-        raise Exception("Not implemented for teams != 18")
-    match_plan = {
-        1: [
-            [0, 9],
-            [1, 10],
-            [2, 11],
-            [3, 12],
-            [4, 13],
-            [5, 14],
-            [6, 15],
-            [7, 16],
-            [8, 17],
-        ]
-    }
-    for i in range(1, 17):
+    if n_teams % 2 != 0:
+        raise Exception("Number of teams must be even")
+    first_col = list(range(0, int(n_teams / 2)))
+    second_col = list(range(int(n_teams / 2), n_teams))[::-1]
+    first_round = list(zip(first_col, second_col))
+
+    schedule = {1: first_round}
+
+    for i in range(1, n_teams - 1):
         round = i + 1
-        next_round_plan = []
-        for match in match_plan[i]:
-            new_match = [plan_rules(team_num) for team_num in match]
-            next_round_plan.append(new_match)
-        match_plan[round] = next_round_plan
-    return match_plan
+        next_round = []
+        for match in schedule[i]:
+            next_match = [plan_rules(team, n_teams) for team in match]
+            next_round.append(next_match)
+        schedule[round] = next_round
+    return schedule
+
