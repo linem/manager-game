@@ -4,8 +4,9 @@ import string
 
 
 def train_team():
-
+    
     print_train_intro()
+    input("Are you ready to start? ")
 
     rounds = 10
     total_elapsed_time = 0
